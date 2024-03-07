@@ -5,15 +5,15 @@ library(ggpubr);
 library(DescTools);
 library(caret);
 
-work.dir <- '/Users/zqiu/Documents/graduate_school/2024WINTER/BEM228/final/code/';
+work.dir <- '/Users/zqiu/Documents/graduate_school/2024WINTER/BEM228/final/be228/';
 path.in <- '/Users/zqiu/Documents/graduate_school/2024WINTER/BEM228/final/data/';
-path.out <- '/Users/zqiu/Documents/graduate_school/2024WINTER/BE223B/output/';
+path.out <- '/Users/zqiu/Documents/graduate_school/2024WINTER/BE223B/final/output/';
 
 # read data
-test <- load(file = '/Users/zqiu/Documents/graduate_school/2024WINTER/BEM228/final/data/NSDUH_2022.Rdata')
+test <- load(file = paste0(path.in, 'NSDUH_2022.Rdata'));
 
 for (nm in test) {
-  x <- get(nm)
+  x <- get(nm);
 }
 
 # original size: 59069*2605
@@ -31,12 +31,12 @@ x.asian.18 <- x.asian[x.asian$AGE3 >3,]; #  2521 2605
 # select all variables for analysis
 final.x <- x.asian.18[,c('QUESTID2', 'CATAG3', 'eduhighcat','irsex', 'cigever', 'cocever', 'cbdhmpevr', 'irimpgout', 'DSTHOP30', 'IRDSTNRV30', 'cabingflg')]
 
-table(final.x$cabingflg); # imbalanced
+table(final.x$cabingflg); # outcome imbalanced
 
 # output data
 write.table(
   final.x, 
-  file = paste0(path.in, 'nmhss_2022_asian18final.txt'),
+  file = paste0(path.in, '2022_asian18final_binge.txt'),
   sep = "\t", 
   row.names = T
 );
