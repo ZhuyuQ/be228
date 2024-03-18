@@ -3,6 +3,7 @@ library(ggplot2);
 library(tidyverse);
 library(caret);
 library(PRROC);
+library(car);
 
 work.dir <- '/Users/zqiu/Documents/graduate_school/2024WINTER/BEM228/final/be228/';
 path.in <- '/Users/zqiu/Documents/graduate_school/2024WINTER/BEM228/final/data/';
@@ -60,6 +61,11 @@ mod3.pred <- train.func(
   data.test = data.test,
   filename = paste0(path.out, 'mod3')
 );
+
+# check multi-colinearity
+vif(mod1.pred[[3]]);
+vif(mod2.pred[[3]]);
+vif(mod3.pred[[3]]);
 
 # compare model auroc&auprc
 p.roc12 <- roc.test(
