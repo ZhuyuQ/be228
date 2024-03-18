@@ -2,6 +2,7 @@
 library('caret');
 library('PRROC');
 library('pROC');
+library('forestplot');
 
 ####################################################################
 # FUNCTION:train.func
