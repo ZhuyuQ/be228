@@ -83,3 +83,50 @@ curve.func <- function(pred.data, filename) {
   
   return();
 }
+
+####################################################################
+# FUNCTION: forset.func
+# Use the glm model result to create forest plots
+# INPUT: 
+# data: include lnOR, p value, 95%ci
+# var: variable names
+# filename: include the path for output
+# OUTPUT: png
+####################################################################
+forset.func <- function(data, var, filename) {
+  forest.data <- tibble(
+    mean = as.numeric(data[,1]),
+    lower = as.numeric(data[,3]),
+    upper = as.numeric(data[,4]),
+    OR = as.character(round(as.numeric(data[,1]),3)),
+    Features = var,
+    Pvalue = as.character(round(data[,2], 3))
+  );
+  
+  header <- tibble(
+    Features = c('Features'),
+    OR = c('ln(OR)'),
+    Pvalue = c('P value')
+  );
+  
+  plot.df <- bind_rows(header, forest.data);
+  
+  png(file = paste0(filename,'.png'), width = 300, height = 10 * nrow(forest.data) + 5, units='mm', res = 300);
+  print(
+    plot.df %>%
+      forestplot(
+        labeltext = c(Features, OR, Pvalue),
+        lineheight = unit(1,'cm'),
+        colgap = unit(3,'mm'),
+        lwd.ci = 2,
+        boxsize = 0.2,
+        xlab = c('ln(OR)'),
+        ci.vertices = TRUE,
+        clip = c(-15, 15),
+        graphwidth = unit(9,'cm')
+      )
+  );
+  dev.off();
+  return();
+}
+
