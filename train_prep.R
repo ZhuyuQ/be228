@@ -27,7 +27,9 @@ table(data$IRDSTNRV30); # 57:154:610:859:841
 table(data$cabingflg); #2154:351:2(11 will be combined with 1 binge):14(- 85need to be excluded)
 
 # remove data with missing value
-data.clean <- data[which(data$cbdhmpevr != 94 & !data$DSTHOP30 %in% c(9,4, 49) & data$cabingflg != 14),]; #1962
+data.clean <- data[which(data$cbdhmpevr != 94 & !data$DSTHOP30 %in% c(94, 97, 98) & data$cabingflg != 85),]; #1962
+data.clean$cabingflg[11 == data.clean$cabingflg] <- 1;
+
 write.table(
   data.clean, 
   file = paste0(path.in, '2022_asian18final_binge_naremove.txt'),
@@ -36,6 +38,7 @@ write.table(
 );
 
 # split the data into training and validation based on the outcome variable: 0.8 train, 0.2 test
+set.seed(55555);
 part.data <- createDataPartition(
   data.clean[, 'cabingflg'],
   p = 0.8
